@@ -35,3 +35,32 @@ export function GET() {
 
     return NextResponse.json({responses});
 }
+
+export async function POST(req: Request) {
+  const body = await req.json();
+  const payload = JSON.stringify(body);
+  let responses: NextResponse[] = [];
+
+  Promise.all(
+    subscriptions.map((sub) => {
+      webPush
+        .sendNotification(sub, payload)
+        .catch((error) =>
+          console.error("Error sending push notification:", error)
+        );
+    })
+  )
+    .then(() => {
+      responses.push(NextResponse.json({
+        message: "Push notifications sent successfully.",
+      }));
+    })
+    .catch((error) => {
+      responses.push(NextResponse.json({
+        message: "Error sending push notifications.",
+        error,
+      }));
+    });
+
+    return NextResponse.json({responses});
+}

@@ -18,8 +18,7 @@ const ServiceWorker = () => {
           registration.pushManager
             .subscribe({
               userVisibleOnly: true,
-              applicationServerKey:
-                "BJXw7X-onxvIejE3OPVk_X2Nwy61bIy7ggzj0FNXOfqxLY4T6Ydg4FyVBu9UXAfHMi1FffwKgKhGNgjs2HzY0lg",
+              applicationServerKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY
             })
             .then((subscription) => {
               // Send the subscription object to your server to save it for later use
