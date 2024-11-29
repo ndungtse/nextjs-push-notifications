@@ -11,6 +11,13 @@ const ServiceWorker = () => {
   };
 
   useEffect(() => {
+    // request permission
+    Notification.requestPermission().then((permission) => {
+      if (permission === "granted") {
+        console.log("Notification permission granted.");
+      }
+    });
+    // register service worker
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker
         .register("/service-worker.js")
@@ -31,6 +38,8 @@ const ServiceWorker = () => {
                 body: JSON.stringify(subscription),
               }).then((res) => {
                 console.log('res', res.json());
+              }).catch((e) => {
+                console.log('error in sending subscription', e);
               });
               
             }).catch((e) => {
